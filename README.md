@@ -1,2 +1,2 @@
-# music-my-mood
+# Music my mood
 Application for providing situational music recomendations
