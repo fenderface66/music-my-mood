@@ -51,16 +51,15 @@ type FetchReferrerPolicy =
   | "origin";
 
 type FetchHeaders = {
-  Headers(): FetchHeaders,
-  append(name: string, value: any): void,
-  delete(name: string): void,
-  entries(): Iterator<*>,
-  get(name: string): string,
-  getAll(name: string): Array<string>,
-  has(name: string): Boolean,
-  keys(): Iterator<string>,
-  set(name: string, value: any): void,
-  values(): Iterator<*>
+  append?: () => void,
+  delete?: (name: string) => void,
+  entries?: () => Iterator<*>,
+  get?: (name: string) => string,
+  getAll?: (name: string) => Array<string>,
+  has?: (name: string) => Boolean,
+  keys?: () => Iterator<string>,
+  set?: (name: string, value: any) => void,
+  values?: Iterator<*>
 };
 
 type FetchOptions = {
@@ -87,6 +86,7 @@ export default function request(
   url: string,
   options: FetchOptions
 ): Promise<void> {
+  // $FlowFixMe
   return fetch(url, options)
     .then(checkStatus)
     .then(parseJSON);
