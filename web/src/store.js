@@ -4,8 +4,7 @@ import { call, all, fork } from "redux-saga/effects";
 import reducers from "./reducers";
 import appSaga from "./containers/App/saga";
 // create the saga middleware
-const sagaMiddleware = createSagaMiddleware();
-
+const sagaMiddleware: any = createSagaMiddleware();
 export default () => {
   const store = createStore(reducers, applyMiddleware(sagaMiddleware));
 

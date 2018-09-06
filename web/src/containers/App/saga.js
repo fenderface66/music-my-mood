@@ -1,10 +1,9 @@
 import type { Saga } from "redux-saga";
-import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest } from "redux-saga/effects";
 import request from "../../utils/request";
 import { loginUserSuccess } from "./actions";
-import { type LoginUser, type LognData, actionKeys } from "./types";
+import { type LoginUser, actionKeys } from "./types";
 
-// worker Saga: will be fired on USER_FETCH_REQUESTED actions
 function* loginUser(action: LoginUser): Saga<void> {
   const requestURL: string = "http://localhost:3000/api/users/login";
   try {
