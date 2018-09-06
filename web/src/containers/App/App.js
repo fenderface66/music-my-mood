@@ -3,43 +3,40 @@
 import React, { Component } from "react";
 import type { Dispatch } from "redux";
 import { connect } from "react-redux";
-import logo from "../../logo.svg";
 import { type Props } from "./types";
-import { initiateApp } from "./actions";
+import { loginUser, loginUserSuccess } from "./actions";
 import AppWrapper from "./App.style";
+import Header from "../../components/Header/Header";
 
 class App extends Component<Props> {
-  componentDidMount() {
-    this.props.initiateApp();
+  async componentDidMount() {
+    await this.checkForExistingUserData();
   }
-  renderAppInitiatedText() {
-    if (this.props.appInitiated) {
-      return <h2>APP INTITIATED</h2>;
-    }
-    return null;
+  async checkForExistingUserData() {
+    const user: ?string = await localStorage.getItem("user");
+    return typeof user !== "string"
+      ? this.props.loginUser({
+          email: "r.heygate@gmail.com",
+          password: "p@ssw0rd!"
+        })
+      : this.props.loginUserSuccess(JSON.parse(user));
   }
   render() {
     return (
       <AppWrapper>
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        {this.renderAppInitiatedText()}
+        <Header title={`Welcome ${this.props.loggedInUser.username}`} />
       </AppWrapper>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  appInitiated: state.app.appInitiated
+  loggedInUser: state.app.loggedInUser
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<*>): Object => ({
-  initiateApp: () => dispatch(initiateApp())
+  loginUser: loginData => dispatch(loginUser(loginData)),
+  loginUserSuccess: userData => dispatch(loginUserSuccess(userData))
 });
 
 export default connect(

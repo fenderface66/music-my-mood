@@ -2,17 +2,9 @@ import styled from "styled-components";
 
 export default styled.div`
   text-align: center;
-
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
     height: 80px;
-  }
-
-  .App-header {
-    background-color: #222;
-    height: 150px;
-    padding: 20px;
-    color: white;
   }
 
   .App-title {

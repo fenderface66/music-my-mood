@@ -1,7 +1,15 @@
-import { type InitiateApp, actionKeys } from "./types";
+import { type LoginUser, type UserData, actionKeys } from "./types";
 
-export const initiateApp = (): InitiateApp => {
+export const loginUser = (loginData: LoginUser) => {
   return {
-    type: actionKeys.INITIATE_APP
+    type: actionKeys.LOGIN_USER,
+    loginData
+  };
+};
+
+export const loginUserSuccess = (userData: UserData) => {
+  return {
+    type: actionKeys.LOGIN_USER_SUCCESS,
+    userData
   };
 };

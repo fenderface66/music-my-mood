@@ -1,7 +1,11 @@
 import { type Action, type State, actionKeys } from "./types";
 
 const initialState = {
-  appInitiated: false
+  loggedInUser: {
+    username: "",
+    email: "",
+    token: ""
+  }
 };
 
 export default function appReducer(
@@ -9,10 +13,10 @@ export default function appReducer(
   action: Action
 ) {
   switch (action.type) {
-    case actionKeys.INITIATE_APP:
+    case actionKeys.LOGIN_USER_SUCCESS:
       return {
         ...state,
-        appInitiated: true
+        loggedInUser: action.userData
       };
     default:
       return state;

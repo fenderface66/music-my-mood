@@ -8,6 +8,7 @@ import "whatwg-fetch";
  * @return {object}          The parsed JSON from the request
  */
 function parseJSON(response) {
+  console.log(response);
   return response.json();
 }
 
@@ -24,8 +25,8 @@ function checkStatus(response) {
   }
 
   const error = new Error({
-    statusText: response.statusText,
-    response
+    status: response.status,
+    message: response.statusText
   });
   throw error;
 }

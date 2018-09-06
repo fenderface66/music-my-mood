@@ -1,16 +1,37 @@
-export type Props = {
-  initiateApp: () => void,
-  appInitiated: boolean
+export type UserData = {
+  username: string,
+  email: string,
+  token: string
 };
 
 export const actionKeys = {
-  INITIATE_APP: "INITIATE_APP"
+  LOGIN_USER: "LOGIN_USER",
+  LOGIN_USER_SUCCESS: "LOGIN_USER_SUCCESS"
 };
 
-export type InitiateApp = { type: "INITIATE_APP" };
+export type LoginData = {
+  email: string,
+  password: string
+};
+
+export type Props = {
+  loginUser: (loginData: LoginData) => void,
+  loginUserSuccess: (userData: UserData) => void,
+  loggedInUser: UserData
+};
+
+export type LoginUser = {
+  type: "LOGIN_USER",
+  loginData: LoginData
+};
+
+export type LoginUserSuccess = {
+  type: "LOGIN_USER_SUCCESS",
+  userData: UserData
+};
 
 export type State = {
-  appInitiated: boolean
+  loggedInUser: UserData
 };
 
-export type Action = InitiateApp;
+export type Action = LoginUser | LoginUserSuccess;
