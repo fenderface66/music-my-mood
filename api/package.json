@@ -1,16 +1,43 @@
 {
   "name": "api",
-  "version": "0.0.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "My Moleculer microservices project",
   "scripts": {
-    "start": "node ./bin/www"
+    "dev": "moleculer-runner --repl --hot services",
+    "start": "moleculer-runner",
+    "ci": "jest --watch",
+    "test": "jest --coverage",
+    "lint": "eslint services"
+  },
+  "keywords": [
+    "microservices",
+    "moleculer"
+  ],
+  "author": "",
+  "devDependencies": {
+    "eslint": "^5.0.1",
+    "jest": "^23.3.0",
+    "jest-cli": "^23.3.0",
+    "moleculer-repl": "^0.5.0"
   },
   "dependencies": {
-    "cookie-parser": "~1.4.3",
-    "debug": "~2.6.9",
-    "express": "~4.16.0",
-    "http-errors": "~1.6.2",
-    "morgan": "~1.9.0",
-    "pug": "2.0.0-beta11"
+    "bcrypt": "^3.0.0",
+    "jsonwebtoken": "^8.3.0",
+    "lodash": "^4.17.10",
+    "moleculer": "^0.13.0",
+    "moleculer-db": "^0.7.5",
+    "moleculer-db-adapter-mongo": "^0.4.1",
+    "moleculer-web": "^0.8.0"
+  },
+  "engines": {
+    "node": ">= 8.x.x"
+  },
+  "jest": {
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node",
+    "rootDir": "./services",
+    "roots": [
+      "../test"
+    ]
   }
 }
