@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { call, all, fork } from "redux-saga/effects";
 import reducers from "./reducers";
-import appSaga from "./containers/App/saga";
+import loginSaga from "./containers/Login/saga";
 // create the saga middleware
 const sagaMiddleware: any = createSagaMiddleware();
 export default () => {
@@ -21,7 +21,7 @@ export default () => {
   }
 
   function* rootSaga() {
-    yield all([forkAutoRestarting(appSaga)]);
+    yield all([forkAutoRestarting(loginSaga)]);
   }
 
   sagaMiddleware.run(rootSaga);

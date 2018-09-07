@@ -8,7 +8,7 @@ const initialState = {
   }
 };
 
-export default function appReducer(
+export default function loginReducer(
   state: State = initialState,
   action: Action
 ) {
