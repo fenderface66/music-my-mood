@@ -1,7 +1,6 @@
 // @flow
 
-import React, { Component } from "react";
-import { type Dispatch, compose } from "redux";
+import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -37,8 +36,12 @@ const Login = props => {
   );
 };
 
+const LoginFormRedux = reduxForm({
+  form: "loginForm" // a unique identifier for this form
+})(Login);
+
 const mapStateToProps = state => ({
   loggedInUser: state.login.loggedInUser
 });
 
-export default withRouter(connect(mapStateToProps)(Login));
+export default withRouter(connect(mapStateToProps)(LoginFormRedux));

@@ -1,8 +1,15 @@
 import React from "react";
+import Error from "../Error/Error";
+import type { FieldProps } from "redux-form";
 
-export default ({ input, label, type, meta: { touched, error } }) => (
-  <div className="care-recipient-info__field">
-    <label htmlFor={type} className="form-label primary">
+export default ({
+  input,
+  label,
+  type,
+  meta: { touched, error }
+}: FieldProps) => (
+  <div>
+    <label htmlFor={type}>
       {label}
       <div>
         <input
@@ -11,8 +18,7 @@ export default ({ input, label, type, meta: { touched, error } }) => (
           type={type}
           className="form-input primary"
         />
-        {touched &&
-          error && <p className="care-recipient-info__field__error">{error}</p>}
+        {touched && error && <Error message={error} />}
       </div>
     </label>
   </div>
