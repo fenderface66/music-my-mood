@@ -3,10 +3,12 @@
 .*/build/.*
 
 [include]
+.*/node_modules/redux-form/*
 
 [libs]
 flow-typed
-
+./node_modules/iflow-react-router/index.js.flow
+./type-def-libs
 [lints]
 
 [options]

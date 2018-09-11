@@ -16,7 +16,8 @@ export type LoginData = {
 
 export type Props = {
   loginUser: (loginData: LoginData) => void,
-  loginUserSuccess: (userData: UserData) => void
+  loginUserSuccess: (userData: UserData) => void,
+  error: string
 };
 
 export type LoginUser = {

@@ -1,6 +1,7 @@
 import React from "react";
 import Error from "../Error/Error";
 import type { FieldProps } from "redux-form";
+import FieldWrapper from "./RenderField.style";
 
 export default ({
   input,
@@ -8,7 +9,7 @@ export default ({
   type,
   meta: { touched, error }
 }: FieldProps) => (
-  <div>
+  <FieldWrapper>
     <label htmlFor={type}>
       {label}
       <div>
@@ -21,5 +22,5 @@ export default ({
         {touched && error && <Error message={error} />}
       </div>
     </label>
-  </div>
+  </FieldWrapper>
 );

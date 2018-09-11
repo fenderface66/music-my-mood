@@ -1,5 +1,6 @@
 import type { Saga } from "redux-saga";
 import { call, put, takeLatest } from "redux-saga/effects";
+import { stopSubmit } from "redux-form";
 import request from "../../utils/request";
 import { loginUserSuccess } from "./actions";
 import { type LoginUser, actionKeys } from "./types";
@@ -20,6 +21,9 @@ function* loginUser(action: LoginUser): Saga<void> {
     yield put(loginUserSuccess(response.user));
   } catch (e) {
     console.log(e);
+    yield put(
+      stopSubmit("loginForm", { _error: "Username/Password incorrect" })
+    );
   }
 }
 

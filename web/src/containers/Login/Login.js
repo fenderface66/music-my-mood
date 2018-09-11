@@ -2,16 +2,19 @@
 
 import React from "react";
 import { Field, reduxForm } from "redux-form";
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import RenderField from "../../components/RenderField/RenderField";
-import { type Props } from "./types";
+import Error from "../../components/Error/Error";
 import submit from "./submit";
 import LoginWrapper from "./Login.style";
 
 const Login = props => {
   const { handleSubmit, submitting } = props;
+  if (props.loggedInUser.username !== "") {
+    return <Redirect to="/" />;
+  }
   return (
     <LoginWrapper onSubmit={handleSubmit(submit)}>
       <Field
@@ -32,6 +35,7 @@ const Login = props => {
         type="submit"
         disabled={submitting}
       />
+      {props.error && <Error message={props.error} />}
     </LoginWrapper>
   );
 };

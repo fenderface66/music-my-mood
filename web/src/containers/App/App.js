@@ -18,8 +18,9 @@ class App extends Component<Props> {
     const user: ?string = await localStorage.getItem("user");
     if (typeof user !== "string") {
       this.props.history.push("/login");
+    } else {
+      this.props.loginUserSuccess(JSON.parse(user));
     }
-    this.props.loginUserSuccess(JSON.parse(user));
   }
   getHeaderString(): string {
     if (this.props.loggedInUser) {
