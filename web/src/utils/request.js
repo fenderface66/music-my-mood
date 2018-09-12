@@ -8,7 +8,6 @@ import "whatwg-fetch";
  * @return {object}          The parsed JSON from the request
  */
 function parseJSON(response) {
-  console.log(response);
   return response.json();
 }
 
@@ -19,16 +18,13 @@ function parseJSON(response) {
  *
  * @return {object|undefined} Returns either the response, or throws an error
  */
-function checkStatus(response) {
+async function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
+  } else {
+    const errorObj = await response.json();
+    throw new Error(JSON.stringify(errorObj.errors));
   }
-
-  const error = new Error({
-    status: response.status,
-    message: response.statusText
-  });
-  throw error;
 }
 
 type FetchRequestMode =
@@ -83,12 +79,12 @@ type FetchOptions = {
  *
  * @return {object}           The response data
  */
-export default function request(
+export default async function request(
   url: string,
   options: FetchOptions
 ): Promise<void> {
   // $FlowFixMe
   return fetch(url, options)
-    .then(checkStatus)
+    .then(await checkStatus)
     .then(parseJSON);
 }

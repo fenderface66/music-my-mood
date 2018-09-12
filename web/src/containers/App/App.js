@@ -9,6 +9,8 @@ import { loginUserSuccess } from "../Login/actions";
 import AppWrapper from "./App.style";
 import Header from "../../components/Header/Header";
 import Login from "../Login/Login";
+import SignUp from "../SignUp/SignUp";
+import Home from "../Home/Home";
 
 class App extends Component<Props> {
   async componentDidMount() {
@@ -20,6 +22,7 @@ class App extends Component<Props> {
       this.props.history.push("/login");
     } else {
       this.props.loginUserSuccess(JSON.parse(user));
+      this.props.history.push("/home");
     }
   }
   getHeaderString(): string {
@@ -34,6 +37,8 @@ class App extends Component<Props> {
         <Header title={this.getHeaderString()} />
         <Switch>
           <Route exact path="/login" component={Login} />
+          <Route exact path="/signUp" component={SignUp} />
+          <Route exact path="/home" component={Home} />
         </Switch>
       </AppWrapper>
     );

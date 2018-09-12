@@ -7,17 +7,28 @@ import { connect } from "react-redux";
 
 import RenderField from "../../components/RenderField/RenderField";
 import Error from "../../components/Error/Error";
-import Link from "../../components/Link/Link";
 import submit from "./submit";
-import LoginWrapper from "./Login.style";
+import SignUpWrapper from "./SignUp.style";
 
-const Login = props => {
+const SignUp = props => {
   const { handleSubmit, submitting } = props;
   if (props.loggedInUser.username !== "") {
     return <Redirect to="/" />;
   }
   return (
-    <LoginWrapper onSubmit={handleSubmit(submit)}>
+    <SignUpWrapper onSubmit={handleSubmit(submit)}>
+      <Field
+        name="firstname"
+        type="text"
+        component={RenderField}
+        label="Firstname"
+      />
+      <Field
+        name="lastname"
+        type="text"
+        component={RenderField}
+        label="Lastname"
+      />
       <Field name="email" type="text" component={RenderField} label="Email" />
       <Field
         name="password"
@@ -27,22 +38,21 @@ const Login = props => {
       />
       <input
         className="care-recipient-info__submit"
-        value="Login"
+        value="Sign up"
         type="submit"
         disabled={submitting}
       />
       {props.error && <Error message={props.error} />}
-      <Link path="/signUp">Don't have an account, sign up here!</Link>
-    </LoginWrapper>
+    </SignUpWrapper>
   );
 };
 
-const LoginFormRedux = reduxForm({
-  form: "loginForm" // a unique identifier for this form
-})(Login);
+const SignUpFormRedux = reduxForm({
+  form: "signUpForm" // a unique identifier for this form
+})(SignUp);
 
 const mapStateToProps = state => ({
   loggedInUser: state.login.loggedInUser
 });
 
-export default withRouter(connect(mapStateToProps)(LoginFormRedux));
+export default withRouter(connect(mapStateToProps)(SignUpFormRedux));
