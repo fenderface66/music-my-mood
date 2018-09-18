@@ -27,7 +27,7 @@ class App extends Component<Props> {
   }
   getHeaderString(): string {
     if (this.props.loggedInUser) {
-      return `Welcome ${this.props.loggedInUser.username}`;
+      return `Welcome ${this.props.loggedInUser.firstname}`;
     }
     return "Login";
   }

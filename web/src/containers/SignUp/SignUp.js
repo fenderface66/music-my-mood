@@ -12,8 +12,8 @@ import SignUpWrapper from "./SignUp.style";
 
 const SignUp = props => {
   const { handleSubmit, submitting } = props;
-  if (props.loggedInUser.username !== "") {
-    return <Redirect to="/" />;
+  if (props.loggedInUser._id !== "") {
+    return <Redirect to="/home" />;
   }
   return (
     <SignUpWrapper onSubmit={handleSubmit(submit)}>

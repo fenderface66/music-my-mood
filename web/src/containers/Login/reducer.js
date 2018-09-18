@@ -2,7 +2,9 @@ import { type Action, type State, actionKeys } from "./types";
 
 const initialState = {
   loggedInUser: {
-    username: "",
+    _id: "",
+    firstname: "",
+    lastname: "",
     email: "",
     token: ""
   }

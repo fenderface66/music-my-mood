@@ -13,8 +13,8 @@ import LoginWrapper from "./Login.style";
 
 const Login = props => {
   const { handleSubmit, submitting } = props;
-  if (props.loggedInUser.username !== "") {
-    return <Redirect to="/" />;
+  if (props.loggedInUser._id !== "") {
+    return <Redirect to="/home" />;
   }
   return (
     <LoginWrapper onSubmit={handleSubmit(submit)}>
