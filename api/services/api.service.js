@@ -1,6 +1,7 @@
 "use strict";
 
 const ApiGateway = require("moleculer-web");
+const { UnAuthorizedError } = ApiGateway.Errors;
 const _ = require("lodash");
 
 module.exports = {
@@ -11,7 +12,7 @@ module.exports = {
 	settings: {
 		port: process.env.PORT || 3000,
 		// Set CORS headers
-		//cors: true,
+		cors: true,
 		aliases: {
 			// Login
 			"POST /users/login": "users.login",
@@ -61,5 +62,49 @@ module.exports = {
 			this.logResponse(req, res, err? err.ctx : null);
 		},
 
+	},
+	methods: {
+		/**
+		 * Authorize the request
+		 *
+		 * @param {Context} ctx
+		 * @param {Object} route
+		 * @param {IncomingRequest} req
+		 * @returns {Promise}
+		 */
+		authorize(ctx, route, req) {
+			let token;
+			if (req.headers.authorization) {
+				let type = req.headers.authorization.split(" ")[0];
+				if (type === "Token" || type === "Bearer")
+					token = req.headers.authorization.split(" ")[1];
+			}
+
+			return this.Promise.resolve(token)
+				.then(token => {
+					if (token) {
+						// Verify JWT token
+						return ctx.call("users.resolveToken", { token })
+							.then(user => {
+								if (user) {
+									this.logger.info("Authenticated via JWT: ", user.username);
+									// Reduce user fields (it will be transferred to other nodes)
+									ctx.meta.user = _.pick(user, ["_id", "username", "email", "image"]);
+									ctx.meta.token = token;
+									ctx.meta.userID = user._id;
+								}
+								return user;
+							})
+							.catch(err => {
+								// Ignored because we continue processing if user is not exist
+								return null;
+							});
+					}
+				})
+				.then(user => {
+					if (req.$action.auth == "required" && !user)
+						return this.Promise.reject(new UnAuthorizedError());
+				});
+		},
 	}
 };

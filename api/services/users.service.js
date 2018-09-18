@@ -1,5 +1,3 @@
-"use strict";
-
 const { MoleculerClientError } = require("moleculer").Errors;
 
 //const crypto 		= require("crypto");
@@ -27,13 +25,14 @@ module.exports = {
 		JWT_SECRET: process.env.JWT_SECRET || "jwt-secret",
 
 		/** Public fields */
-		fields: ["_id", "username", "email", "bio", "image"],
+		fields: ["_id", "firstname", "lastname", "email", "bio", "image"],
 
 		/** Validator schema for entity */
 		entityValidator: {
-			username: { type: "string", min: 2, pattern: /^[a-zA-Z0-9]+$/ },
-			password: { type: "string", min: 6 },
+			firstname: { type: "string"},
+			lastname: { type: "string"},
 			email: { type: "email" },
+			password: { type: "string", min: 6 },
 			bio: { type: "string", optional: true },
 			image: { type: "string", optional: true },
 		}
@@ -55,38 +54,25 @@ module.exports = {
 			params: {
 				user: { type: "object" }
 			},
-			handler(ctx) {
+			async handler(ctx) {
 				let entity = ctx.params.user;
-				return this.validateEntity(entity)
-					.then(() => {
-						if (entity.username)
-							return this.adapter.findOne({ username: entity.username })
-								.then(found => {
-									if (found)
-										return Promise.reject(new MoleculerClientError("Username is exist!", 422, "", [{ field: "username", message: "is exist"}]));
+				await this.validateEntity(entity);
+				if (entity.email) {
+					const found = await this.adapter.findOne({ email: entity.email });
+					if (found)
+						return Promise.reject(
+							new MoleculerClientError("Email exists!", 422, "Email exists!", [{ field: "email", message: "Email exists"}])
+						);
+				}
+				entity.password = bcrypt.hashSync(entity.password, 10);
+				entity.bio = entity.bio || "";
+				entity.image = entity.image || null;
+				entity.createdAt = new Date();
 
-								});
-					})
-					.then(() => {
-						if (entity.email)
-							return this.adapter.findOne({ email: entity.email })
-								.then(found => {
-									if (found)
-										return Promise.reject(new MoleculerClientError("Email is exist!", 422, "", [{ field: "email", message: "is exist"}]));
-								});
-
-					})
-					.then(() => {
-						entity.password = bcrypt.hashSync(entity.password, 10);
-						entity.bio = entity.bio || "";
-						entity.image = entity.image || null;
-						entity.createdAt = new Date();
-
-						return this.adapter.insert(entity)
-							.then(doc => this.transformDocuments(ctx, {}, doc))
-							.then(user => this.transformEntity(user, true, ctx.meta.token))
-							.then(json => this.entityChanged("created", json, ctx).then(() => json));
-					});
+				const doc = await this.adapter.insert(entity);
+				const user = await this.transformDocuments(ctx, {}, doc);
+				const json = await this.transformEntity(user, true, ctx.meta.token);
+				return this.entityChanged("created", json, ctx).then(() => json);
 			}
 		},
 
