@@ -9,7 +9,7 @@ export default function testReducer(
   action: Action
 ) {
   switch (action.type) {
-    case actionKeys.TEST_ACTION_SUCCESS:
+    case actionKeys.GET_MUSIC_SUCCESS:
       return {
         ...state,
         data: action.payload.data

@@ -5,17 +5,14 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { type Props } from "./types";
 import HomeWrapper from "./Home.style";
+import Music from "../Music/Music";
 
 class Home extends Component<Props> {
-  componentDidMount() {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      console.log(position);
-    });
-  }
   render() {
     return (
       <HomeWrapper>
         <h1>Welcome to the homepage</h1>
+        <Music />
       </HomeWrapper>
     );
   }

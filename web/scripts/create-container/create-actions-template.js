@@ -1,4 +1,4 @@
-import { actionKeys } from "./types";
+import { type TestPayload, actionKeys } from "./types";
 
 export const testAction = () => {
   return {
@@ -6,8 +6,15 @@ export const testAction = () => {
   };
 };
 
-export const testActionSuccess = () => {
+export const testActionSuccess = (payload: TestPayload) => {
   return {
-    type: actionKeys.TEST_ACTION_SUCCESS
+    type: actionKeys.TEST_ACTION_SUCCESS,
+    payload
+  };
+};
+
+export const testActionFailed = () => {
+  return {
+    type: actionKeys.TEST_ACTION_FAILED
   };
 };

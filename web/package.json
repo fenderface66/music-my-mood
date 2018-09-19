@@ -29,7 +29,7 @@
     "flow": "$(npm bin)/flow",
     "postinstall": "$(npm bin)/flow-typed install",
     "precommit": "lint-staged",
-    "create-component": "node ./scripts/create-component/create-component.js"
+    "create-container": "node ./scripts/create-container/create-container.js"
   },
   "lint-staged": {
     "./**/*.js": [

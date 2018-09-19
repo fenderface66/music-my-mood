@@ -10,7 +10,7 @@ class containerName extends Component<Props> {
   render() {
     return (
       <containerNameWrapper>
-        <h1>Welcome to the containerName component</h1>
+        <h1>Welcome to the containerName</h1>
       </containerNameWrapper>
     );
   }

@@ -1,20 +1,20 @@
 const fs = require("fs");
 
-const pathname = process.argv[2];
-const componentName = process.argv[3];
+const pathname = "./src/containers/";
+const containerName = process.argv[2];
 
 (async () => {
-  await fs.mkdirSync(`${pathname}${componentName}`);
+  await fs.mkdirSync(`${pathname}${containerName}`);
   await fs.readFile(
-    "./scripts/create-component/create-component-template.js",
+    "./scripts/create-container/create-container-template.js",
     "utf8",
     (err, data) => {
       if (err) {
         return console.log(err);
       }
-      const result = data.replace(/componentName/g, componentName);
+      const result = data.replace(/containerName/g, containerName);
       fs.writeFile(
-        `${pathname}/${componentName}/${componentName}.js`,
+        `${pathname}/${containerName}/${containerName}.js`,
         result,
         "utf8",
         writeErr => {
@@ -24,32 +24,14 @@ const componentName = process.argv[3];
     }
   );
   await fs.readFile(
-    "./scripts/create-component/create-container-template.js",
-    "utf8",
-    (err, data) => {
-      if (err) {
-        return console.log(err);
-      }
-      const result = data.replace(/componentName/g, componentName);
-      fs.writeFile(
-        `${pathname}/${componentName}/${componentName}.container.js`,
-        result,
-        "utf8",
-        writeErr => {
-          if (writeErr) return console.log(writeErr);
-        }
-      );
-    }
-  );
-  await fs.readFile(
-    "./scripts/create-component/create-stylesheet-template.js",
+    "./scripts/create-container/create-stylesheet-template.js",
     "utf8",
     (err, data) => {
       if (err) {
         return console.log(err);
       }
       fs.writeFile(
-        `${pathname}/${componentName}/${componentName}.style.js`,
+        `${pathname}/${containerName}/${containerName}.style.js`,
         data,
         "utf8",
         writeErr => {
@@ -59,14 +41,14 @@ const componentName = process.argv[3];
     }
   );
   await fs.readFile(
-    "./scripts/create-component/create-types-template.js",
+    "./scripts/create-container/create-types-template.js",
     "utf8",
     (err, data) => {
       if (err) {
         return console.log(err);
       }
       fs.writeFile(
-        `${pathname}/${componentName}/types.js`,
+        `${pathname}/${containerName}/types.js`,
         data,
         "utf8",
         writeErr => {
@@ -76,14 +58,14 @@ const componentName = process.argv[3];
     }
   );
   await fs.readFile(
-    "./scripts/create-component/create-actions-template.js",
+    "./scripts/create-container/create-actions-template.js",
     "utf8",
     (err, data) => {
       if (err) {
         return console.log(err);
       }
       fs.writeFile(
-        `${pathname}/${componentName}/actions.js`,
+        `${pathname}/${containerName}/actions.js`,
         data,
         "utf8",
         writeErr => {
@@ -93,14 +75,14 @@ const componentName = process.argv[3];
     }
   );
   await fs.readFile(
-    "./scripts/create-component/create-saga-template.js",
+    "./scripts/create-container/create-saga-template.js",
     "utf8",
     (err, data) => {
       if (err) {
         return console.log(err);
       }
       fs.writeFile(
-        `${pathname}/${componentName}/saga.js`,
+        `${pathname}/${containerName}/saga.js`,
         data,
         "utf8",
         writeErr => {
@@ -110,14 +92,14 @@ const componentName = process.argv[3];
     }
   );
   await fs.readFile(
-    "./scripts/create-component/create-reducer-template.js",
+    "./scripts/create-container/create-reducer-template.js",
     "utf8",
     (err, data) => {
       if (err) {
         return console.log(err);
       }
       fs.writeFile(
-        `${pathname}/${componentName}/reducer.js`,
+        `${pathname}/${containerName}/reducer.js`,
         data,
         "utf8",
         writeErr => {

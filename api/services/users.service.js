@@ -91,24 +91,28 @@ module.exports = {
 					password: { type: "string", min: 1 }
 				}}
 			},
-			handler(ctx) {
+			async handler(ctx) {
 				const { email, password } = ctx.params.user;
+				const user = await this.adapter.findOne({ email });
+				
+				if (!user) {
+					return this.Promise.reject(new MoleculerClientError(
+						"Email or password is invalid!",
+						422,
+						"",
+						[{ field: "email", message: "is not found"}])
+					);
+				}
 
-				return this.Promise.resolve()
-					.then(() => this.adapter.findOne({ email }))
-					.then(user => {
-						if (!user)
-							return this.Promise.reject(new MoleculerClientError("Email or password is invalid!", 422, "", [{ field: "email", message: "is not found"}]));
+				const isPasswordCorrect = await bcrypt.compare(password, user.password);
+				if (!isPasswordCorrect) {
+					return Promise.reject(new MoleculerClientError(
+						"Wrong password!", 422, "", [{ field: "email", message: "is not found"}]));
+				}
 
-						return bcrypt.compare(password, user.password).then(res => {
-							if (!res)
-								return Promise.reject(new MoleculerClientError("Wrong password!", 422, "", [{ field: "email", message: "is not found"}]));
-
-							// Transform user entity (remove password and all protected fields)
-							return this.transformDocuments(ctx, {}, user);
-						});
-					})
-					.then(user => this.transformEntity(user, true, ctx.meta.token));
+				// Transform user entity (remove password and all protected fields)
+				const transformedEntity = await this.transformDocuments(ctx, {}, user);
+				return this.transformEntity(transformedEntity, true, ctx.meta.token);
 			}
 		},
 
