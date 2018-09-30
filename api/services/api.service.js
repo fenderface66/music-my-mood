@@ -13,29 +13,42 @@ module.exports = {
 		port: process.env.PORT || 3000,
 		// Set CORS headers
 		cors: true,
-		aliases: {
-			// Login
-			"POST /users/login": "users.login",
-
-			// Users
-			"REST /users": "users",
-
-			// Current user
-			"GET /user": "users.me",
-			"PUT /user": "users.updateMyself",
-		},
-		// Parse body content
-		bodyParsers: {
-			json: {
-				strict: false
-			},
-			urlencoded: {
-				extended: false
-			}
-		},
 		routes: [{
 			path: "/api",
+
 			authorization: true,
+
+			aliases: {
+				// Login
+				"POST /users/login": "users.login",
+
+				// Users
+				"REST /users": "users",
+
+				// Current user
+				"GET /user": "users.me",
+				"PUT /user": "users.updateMyself",
+
+				// Music
+				"GET /music": "music.party",
+
+			},
+
+			// Disable to call not-mapped actions
+			mappingPolicy: "restrict",
+
+			// Set CORS headers
+			cors: true,
+
+			// Parse body content
+			bodyParsers: {
+				json: {
+					strict: false
+				},
+				urlencoded: {
+					extended: false
+				}
+			}
 		}],
 
 		// Serve assets from "public" folder
@@ -102,6 +115,7 @@ module.exports = {
 					}
 				})
 				.then(user => {
+					console.log('HERE!!!');
 					if (req.$action.auth == "required" && !user)
 						return this.Promise.reject(new UnAuthorizedError());
 				});
