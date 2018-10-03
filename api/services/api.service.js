@@ -19,8 +19,15 @@ module.exports = {
 			authorization: true,
 
 			aliases: {
+
+				// Create
+				"POST /users/create": "users.create",
+
 				// Login
 				"POST /users/login": "users.login",
+
+				// Get User
+				"GET /users/profile": "users.profile",
 
 				// Users
 				"REST /users": "users",
@@ -30,7 +37,7 @@ module.exports = {
 				"PUT /user": "users.updateMyself",
 
 				// Music
-				"GET /music": "music.party",
+				"GET /music": "music.createMusicPlaylist",
 
 			},
 
@@ -61,6 +68,7 @@ module.exports = {
 			res.writeHead(err.code || 500);
 
 			if (err.code == 422) {
+				console.log(err);
 				let o = {};
 				err.data.forEach(e => {
 					let field = e.field.split(".").pop();

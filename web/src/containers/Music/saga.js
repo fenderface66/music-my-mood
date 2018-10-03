@@ -5,10 +5,11 @@ import { getMusicSuccess, getMusicFailed } from "./actions";
 import { type GetMusic, actionKeys } from "./types";
 
 function* getMusic(action: GetMusic): Saga<void> {
-  const requestURL: string = `http://localhost:3000/api/music/${
-    action.payload.userID
-  }/${action.payload.longitude}/${action.payload.latitude}`;
+  const requestURL: string = `http://localhost:3000/api/music?longitude=${
+    action.payload.longitude
+  }&latitude=${action.payload.latitude}&userID=${action.payload.userID}`;
   try {
+    console.log(requestURL);
     const response = yield call(request, encodeURI(requestURL));
     yield put(getMusicSuccess(response));
   } catch (e) {

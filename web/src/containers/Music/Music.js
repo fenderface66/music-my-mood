@@ -10,14 +10,20 @@ import MusicWrapper from "./Music.style";
 
 class Music extends Component<Props> {
   componentDidMount() {
-    navigator.geolocation.getCurrentPosition((position: Position) => {
-      console.log(this.props);
-      this.props.getMusic({
-        userID: this.props.userID,
-        longitude: position.coords.longitude,
-        latitude: position.coords.latitude
-      });
-    });
+    navigator.geolocation.getCurrentPosition(
+      (position: Position) => {
+        console.log(position);
+        this.props.getMusic({
+          userID: this.props.userID,
+          longitude: position.coords.longitude,
+          latitude: position.coords.latitude
+        });
+      },
+      e => {
+        console.log(e);
+      },
+      { timeout: 20000 }
+    );
   }
   render() {
     return (

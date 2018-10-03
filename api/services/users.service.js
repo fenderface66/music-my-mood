@@ -8,8 +8,7 @@ const jwt 			= require("jsonwebtoken");
 const DbService = require("../mixins/db.mixin");
 const CacheCleanerMixin = require("../mixins/cache.cleaner.mixin");
 
-module.exports = (broker) => {
-	return new Service(broker, {
+module.exports = {
 		name: "users",
 		mixins: [
 			DbService("users"),
@@ -27,7 +26,7 @@ module.exports = (broker) => {
 			JWT_SECRET: process.env.JWT_SECRET || "jwt-secret",
 
 			/** Public fields */
-			fields: ["firstname", "lastname", "email", "bio", "image"],
+			fields: ["_id", "firstname", "lastname", "email", "bio", "image"],
 
 			/** Validator schema for entity */
 			entityValidator: {
@@ -244,17 +243,15 @@ module.exports = (broker) => {
 					keys: ["#userID", "username"]
 				},
 				params: {
-					username: { type: "string" }
+					_id: { type: "string" }
 				},
-				handler(ctx) {
-					return this.adapter.findOne({ username: ctx.params.username })
-						.then(user => {
-							if (!user)
-								return this.Promise.reject(new MoleculerClientError("User not found!", 404));
+				async handler(ctx) {
+					const user = await this.adapter.findOne({ _id: ctx.params._id });
+					if (!user)
+						return this.Promise.reject(new MoleculerClientError("User not found!", 404));
 
-							return this.transformDocuments(ctx, {}, user);
-						})
-						.then(user => this.transformProfile(ctx, user, ctx.meta.user));
+					return this.transformDocuments(ctx, {}, user);
+
 				}
 			},
 
@@ -386,5 +383,4 @@ module.exports = (broker) => {
 					this.broker.cacher.clean(`${this.name}.*`);
 			}
 		}
-	});
 };
